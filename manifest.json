@@ -1,0 +1,21 @@
+{
+  "id": "/",
+  "name": "IPO Discussions",
+  "short_name": "IPO Discussions",
+  "description": "Real Talks • Better Decisions",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#080808",
+  "theme_color": "#080808",
+  "categories": ["finance", "business"],
+  "icons": [
+    {
+      "src": "/file_00000000386881fa9a7f793087377043.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
