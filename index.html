@@ -3,214 +3,289 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080b12">
-  <meta name="description" content="IPO Discussions - Your IPO information and discussion platform.">
-  <title>IPO Discussions</title>
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="IPO Discussions - Real Talks, Better Decisions">
   <link rel="manifest" href="/manifest.json">
+  <title>IPO Discussions</title>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
+      margin: 0;
+      background: #080808;
+      color: #f5f5f5;
       font-family: Arial, sans-serif;
-      background: #080b12;
-      color: #ffffff;
+      padding-bottom: 82px;
     }
-
     header {
-      padding: 20px;
-      background: #111722;
-      border-bottom: 1px solid #b99542;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 13px 15px;
+      background: #080808;
+      border-bottom: 1px solid #292929;
     }
-
-    .logo {
-      color: #e5bd62;
-      font-size: 23px;
-      font-weight: bold;
-      letter-spacing: 1px;
+    .brand { display: flex; align-items: center; gap: 9px; }
+    .brand img {
+      width: 43px; height: 43px;
+      object-fit: contain; border-radius: 50%;
     }
-
-    header p {
-      color: #aab2c0;
-      font-size: 12px;
-      margin-top: 6px;
+    .brand h2 { margin: 0; color: #e8bd59; font-size: 15px; }
+    .brand small { color: #aaa; font-size: 9px; }
+    button {
+      cursor: pointer;
+      background: #191919;
+      color: #e8bd59;
+      border: 1px solid #454545;
+      border-radius: 9px;
+      padding: 10px 12px;
     }
-
-    .container {
-      padding: 20px;
-      max-width: 750px;
-      margin: auto;
+    main { max-width: 850px; margin: auto; padding: 16px; }
+    .welcome { margin: 12px 0 20px; }
+    .welcome h1 { font-size: 24px; margin: 0 0 7px; }
+    .welcome p, .muted { color: #999; font-size: 13px; }
+    .gold { color: #e8bd59; }
+    input {
+      width: 100%; padding: 13px;
+      border-radius: 10px; border: 1px solid #444;
+      background: #171717; color: white;
+      font-size: 14px; margin: 8px 0;
     }
-
-    .welcome {
-      padding: 25px 20px;
-      background: linear-gradient(135deg, #202b3c, #111722);
-      border: 1px solid #a8873d;
-      border-radius: 15px;
-      margin-bottom: 25px;
-    }
-
-    .welcome h1 {
-      color: #e5bd62;
-      font-size: 25px;
-      margin-bottom: 10px;
-    }
-
-    .welcome p {
-      color: #c2c8d2;
-      line-height: 1.6;
-      font-size: 14px;
-    }
-
     .section-title {
-      font-size: 19px;
-      margin-bottom: 15px;
-      color: #e5bd62;
+      display: flex; justify-content: space-between;
+      align-items: center; margin: 25px 0 12px;
     }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+    .section-title h2 { font-size: 17px; margin: 0; }
+    .market-grid, .quick-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 11px;
     }
-
     .card {
-      background: #151d2a;
-      border: 1px solid #293447;
-      border-radius: 12px;
-      padding: 18px 12px;
-      text-align: center;
+      background: #141414; border: 1px solid #303030;
+      border-radius: 14px; padding: 15px; margin-bottom: 12px;
     }
-
-    .card h3 {
-      color: #e5bd62;
-      font-size: 16px;
-      margin-bottom: 8px;
+    .market-card small { color: #999; }
+    .market-card h3 { margin: 9px 0 5px; font-size: 21px; }
+    .notice { color: #888; font-size: 11px; line-height: 1.5; }
+    .filters { display: flex; gap: 8px; overflow-x: auto; }
+    .filter { white-space: nowrap; }
+    .filter.active { background: #e8bd59; color: #111; }
+    .ipo-card h3 { margin: 0 0 9px; font-size: 17px; }
+    .tag {
+      display: inline-block; color: #e8bd59;
+      background: #302713; border-radius: 20px;
+      padding: 5px 9px; font-size: 10px; margin-bottom: 10px;
     }
-
-    .card p {
-      color: #aab2c0;
-      font-size: 12px;
+    .ipo-meta {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 14px; margin-top: 15px;
     }
-
-    .status {
-      margin-top: 25px;
-      padding: 18px;
-      border-radius: 12px;
-      background: #151d2a;
-      border: 1px solid #293447;
+    .ipo-meta small { color: #999; display: block; margin-bottom: 5px; }
+    .ipo-meta strong { font-size: 13px; }
+    .quick-grid button { padding: 17px 7px; font-size: 13px; }
+    .discussion { line-height: 1.5; }
+    .discussion p { color: #bbb; font-size: 13px; }
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      display: flex; justify-content: space-around;
+      background: #111; border-top: 1px solid #333;
+      padding: 10px 2px; z-index: 10;
     }
-
-    .status h2 {
-      color: #e5bd62;
-      font-size: 17px;
-      margin-bottom: 8px;
+    .bottom-nav a {
+      color: #aaa; text-decoration: none;
+      text-align: center; font-size: 10px;
     }
-
-    .status p {
-      color: #aab2c0;
-      font-size: 13px;
-      line-height: 1.6;
+    .bottom-nav a span {
+      display: block; font-size: 19px; margin-bottom: 4px;
     }
-
-    footer {
-      text-align: center;
-      padding: 25px 10px;
-      color: #778294;
-      font-size: 12px;
+    .bottom-nav a.active { color: #e8bd59; }
+    .empty { display: none; color: #aaa; font-size: 13px; }
+    #message {
+      display: none; position: fixed; bottom: 75px;
+      left: 50%; transform: translateX(-50%);
+      background: #292929; color: #e8bd59;
+      border: 1px solid #555; padding: 11px 15px;
+      border-radius: 9px; font-size: 12px; z-index: 20;
     }
-
-    @media (max-width: 360px) {
-      .cards {
-        grid-template-columns: 1fr;
-      }
+    body.light { background: #f5f5f5; color: #171717; }
+    body.light header, body.light .bottom-nav { background: #fff; }
+    body.light .card { background: #fff; border-color: #ddd; }
+    body.light input { background: #fff; color: #111; }
+    body.light .welcome p, body.light .muted,
+    body.light .discussion p { color: #666; }
+    @media (min-width: 650px) {
+      main { padding: 24px; }
+      .quick-grid { grid-template-columns: repeat(4, 1fr); }
     }
   </style>
 </head>
 
 <body>
-
   <header>
-    <div class="logo">IPO DISCUSSIONS</div>
-    <p>YOUR IPO INFORMATION PLATFORM</p>
+    <div class="brand">
+      <img src="/file_00000000386881fa9a7f793087377043.png" alt="IPO Discussions Logo">
+      <div>
+        <h2>IPO DISCUSSIONS</h2>
+        <small>REAL TALKS • BETTER DECISIONS</small>
+      </div>
+    </div>
+    <div>
+      <button onclick="document.getElementById('search').focus()" aria-label="Search">⌕</button>
+      <button onclick="toggleTheme()" aria-label="Change theme">◐</button>
+    </div>
   </header>
 
-  <main class="container">
-
-    <section class="welcome">
-      <h1>Welcome to IPO Discussions</h1>
-      <p>
-        Explore IPO information, track upcoming IPOs
-        and stay connected with the stock market.
-      </p>
+  <main>
+    <section class="welcome" id="home">
+      <h1>Welcome to <span class="gold">IPO Discussions</span></h1>
+      <p>Your IPO research and investor community platform.</p>
     </section>
 
-    <h2 class="section-title">Explore IPOs</h2>
+    <input id="search" type="search" placeholder="Search IPOs..." oninput="searchIPOs(this.value)">
 
-    <section class="cards">
-      <div class="card">
-        <h3>Upcoming IPO</h3>
-        <p>Explore upcoming IPOs</p>
+    <section id="market">
+      <div class="section-title">
+        <h2>Market Overview</h2><span class="muted">INDIA</span>
+      </div>
+      <div class="market-grid">
+        <div class="card market-card">
+          <small>NIFTY 50</small>
+          <h3>--</h3>
+          <small>Live data coming soon</small>
+        </div>
+        <div class="card market-card">
+          <small>SENSEX</small>
+          <h3>--</h3>
+          <small>Live data coming soon</small>
+        </div>
+      </div>
+      <p class="notice">Live market data will be connected in a future update.</p>
+    </section>
+
+    <section id="ipos">
+      <div class="section-title">
+        <h2>Live & Upcoming IPOs</h2>
+        <span class="gold">View All →</span>
+      </div>
+      <div class="filters">
+        <button class="filter active" onclick="filterIPOs('All',this)">All</button>
+        <button class="filter" onclick="filterIPOs('Mainboard',this)">Mainboard</button>
+        <button class="filter" onclick="filterIPOs('SME',this)">SME</button>
       </div>
 
-      <div class="card">
-        <h3>Open IPO</h3>
-        <p>Currently open IPOs</p>
-      </div>
+      <div id="ipo-list">
+        <article class="card ipo-card" data-type="Mainboard">
+          <span class="tag">DEMO IPO • MAINBOARD</span>
+          <h3>Example Technologies Ltd.</h3>
+          <div class="muted">Sample IPO card — illustrative information only</div>
+          <div class="ipo-meta">
+            <div><small>Price Band</small><strong>₹--</strong></div>
+            <div><small>Lot Size</small><strong>-- Shares</strong></div>
+            <div><small>GMP</small><strong>Not available</strong></div>
+            <div><small>Subscription</small><strong>-- Times</strong></div>
+          </div>
+        </article>
 
-      <div class="card">
-        <h3>Closed IPO</h3>
-        <p>Recently closed IPOs</p>
+        <article class="card ipo-card" data-type="SME">
+          <span class="tag">DEMO IPO • SME</span>
+          <h3>Sample Industries Ltd.</h3>
+          <div class="muted">Sample IPO card — illustrative information only</div>
+          <div class="ipo-meta">
+            <div><small>Price Band</small><strong>₹--</strong></div>
+            <div><small>Lot Size</small><strong>-- Shares</strong></div>
+            <div><small>GMP</small><strong>Not available</strong></div>
+            <div><small>Subscription</small><strong>-- Times</strong></div>
+          </div>
+        </article>
       </div>
+      <p class="empty" id="empty">No matching IPO found.</p>
+      <p class="notice">These are demo cards, not real IPO listings or investment information.</p>
+    </section>
 
-      <div class="card">
-        <h3>Listed IPO</h3>
-        <p>Check listed IPOs</p>
-      </div>
-
-      <div class="card">
-        <h3>IPO GMP</h3>
-        <p>Grey market premium</p>
-      </div>
-
-      <div class="card">
-        <h3>Allotment</h3>
-        <p>IPO allotment updates</p>
+    <section id="tools">
+      <div class="section-title"><h2>Quick Actions</h2></div>
+      <div class="quick-grid">
+        <button onclick="showMessage('GMP section will be added soon.')">📊<br>IPO GMP</button>
+        <button onclick="showMessage('Allotment checker will be added soon.')">📋<br>Allotment</button>
+        <button onclick="showMessage('Subscription data will be added soon.')">📈<br>Subscription</button>
+        <button onclick="showMessage('Listing gain calculator will be added soon.')">💰<br>Listing Gain</button>
       </div>
     </section>
 
-    <section class="status">
-      <h2>IPO Discussions App</h2>
-      <p>
-        Your new app is being built.
-        More features and discussions will be
-        added step by step.
-      </p>
+    <section id="discussions">
+      <div class="section-title"><h2>Community Discussions</h2><span class="gold">Explore →</span></div>
+      <div class="card discussion">
+        <span class="tag">COMMUNITY</span>
+        <h3>Welcome to IPO Discussions!</h3>
+        <p>Share your IPO research, ask questions and discuss market opportunities with other investors.</p>
+        <small class="muted">Community posting feature coming soon.</small>
+      </div>
     </section>
 
+    <section id="calendar">
+      <div class="section-title"><h2>IPO Calendar</h2></div>
+      <div class="card">
+        <p class="muted">IPO opening dates, closing dates and listing schedules will appear here.</p>
+        <span class="tag">COMING SOON</span>
+      </div>
+    </section>
   </main>
 
-  <footer>
-    © 2026 IPO Discussions. All rights reserved.
-  </footer>
+  <nav class="bottom-nav">
+    <a class="active" href="#home"><span>⌂</span>Home</a>
+    <a href="#ipos"><span>▤</span>IPOs</a>
+    <a href="#discussions"><span>◉</span>Discuss</a>
+    <a href="#calendar"><span>▦</span>Calendar</a>
+    <a href="#tools"><span>☰</span>More</a>
+  </nav>
 
-<script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("/Service-worker.js")
-        .then(registration => {
-          console.log("App is ready:", registration.scope);
-        })
-        .catch(error => {
-          console.error("Service Worker Error:", error);
-        });
-    });
-  }
-</script>
+  <div id="message"></div>
 
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle("light");
+    }
+
+    function filterIPOs(type, button) {
+      document.querySelectorAll(".filter").forEach(item => item.classList.remove("active"));
+      button.classList.add("active");
+      document.querySelectorAll(".ipo-card").forEach(card => {
+        card.style.display = type === "All" || card.dataset.type === type ? "block" : "none";
+      });
+      updateEmpty();
+    }
+
+    function searchIPOs(value) {
+      const query = value.toLowerCase();
+      document.querySelectorAll(".ipo-card").forEach(card => {
+        card.style.display = card.innerText.toLowerCase().includes(query) ? "block" : "none";
+      });
+      updateEmpty();
+    }
+
+    function updateEmpty() {
+      const visible = [...document.querySelectorAll(".ipo-card")]
+        .some(card => card.style.display !== "none");
+      document.getElementById("empty").style.display = visible ? "none" : "block";
+    }
+
+    function showMessage(message) {
+      const box = document.getElementById("message");
+      box.textContent = message;
+      box.style.display = "block";
+      setTimeout(() => box.style.display = "none", 2500);
+    }
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/Service-worker.js")
+          .catch(error => console.error("Service Worker Error:", error));
+      });
+    }
+  </script>
 </body>
 </html>
+
