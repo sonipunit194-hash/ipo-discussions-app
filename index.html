@@ -1,730 +1,695 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#090909">
-  <meta name="description" content="IPO Discussions - IPO updates, GMP, allotment and listing discussions.">
-  <title>IPO Discussions</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090909">
+<meta name="description" content="IPO Discussions - IPO updates, GMP, allotment and listing discussions.">
+<title>IPO Discussions</title>
+<link rel="manifest" href="/manifest.json">
 
-  <link rel="manifest" href="/manifest.json">
+<style>
+:root {
+  --bg:#090909;
+  --card:#151515;
+  --card2:#202020;
+  --text:#fff;
+  --muted:#aaa;
+  --gold:#e6b84a;
+  --border:#303030;
+  --red:#ff3030;
+}
+body.light {
+  --bg:#f5f5f5;
+  --card:#fff;
+  --card2:#eee;
+  --text:#171717;
+  --muted:#777;
+  --gold:#bd8b19;
+  --border:#ddd;
+}
+* {box-sizing:border-box;margin:0;padding:0}
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+  padding-bottom:85px;
+  transition:.2s;
+}
+.app {max-width:600px;margin:auto;min-height:100vh}
+header {
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 15px;background:var(--card);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:10;
+}
+.brand {display:flex;align-items:center;gap:10px}
+.brand img {width:43px;height:43px;object-fit:contain;border-radius:10px}
+.brand h1 {font-size:18px;color:var(--gold)}
+.brand p {font-size:10px;color:var(--muted);margin-top:3px}
+.theme-btn {
+  background:var(--card2);color:var(--gold);
+  border:1px solid var(--border);border-radius:50%;
+  width:39px;height:39px;font-size:19px;cursor:pointer;
+}
+.search-wrap {padding:14px 15px 5px}
+.search-box {
+  display:flex;align-items:center;background:var(--card);
+  border:1px solid var(--border);border-radius:12px;padding:0 13px;
+}
+.search-box span {font-size:22px;color:var(--gold)}
+.search-box input {
+  width:100%;padding:13px 10px;border:none;outline:none;
+  background:transparent;color:var(--text);font-size:14px;
+}
+.channel-banner {width:100%;padding:12px 15px;overflow:hidden}
+.channel-banner img {width:100%;height:auto;display:block;border-radius:13px}
+section {padding:13px 15px}
+.section-heading {
+  display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:13px;
+}
+.section-heading h2 {font-size:19px}
+.section-heading a {color:var(--gold);font-size:12px;text-decoration:none}
+.filters {display:flex;gap:8px;overflow-x:auto;padding-bottom:12px}
+.filter-btn {
+  white-space:nowrap;padding:9px 16px;border-radius:20px;
+  border:1px solid var(--border);color:var(--text);
+  background:var(--card);cursor:pointer;font-size:12px;
+}
+.filter-btn.active {background:var(--gold);color:#111;border-color:var(--gold);font-weight:bold}
+.ipo-list {display:grid;gap:12px}
+.ipo-card {
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:14px;
+}
+.ipo-top {display:flex;align-items:center;gap:11px}
+.ipo-logo {
+  width:45px;height:45px;background:var(--card2);color:var(--gold);
+  border-radius:10px;display:grid;place-items:center;
+  font-size:19px;font-weight:bold;
+}
+.ipo-info {flex:1;min-width:0}
+.ipo-info h3 {font-size:15px;margin-bottom:5px}
+.ipo-info p {font-size:11px;color:var(--muted)}
+.ipo-status {
+  color:var(--gold);background:#6d531d33;
+  border:1px solid #9c792e66;border-radius:20px;
+  padding:5px 8px;font-size:10px;white-space:nowrap;
+}
+.ipo-details {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  margin-top:15px;padding-top:12px;border-top:1px solid var(--border);
+}
+.detail small {color:var(--muted);display:block;font-size:10px;margin-bottom:5px}
+.detail strong {font-size:12px}
+.ipo-actions {display:flex;gap:9px;margin-top:13px}
+.action-btn {
+  flex:1;padding:10px;border-radius:9px;
+  border:1px solid var(--border);background:var(--card2);
+  color:var(--text);font-size:12px;cursor:pointer;
+}
+.action-btn.primary {background:var(--gold);color:#111;border-color:var(--gold);font-weight:bold}
+.quick-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.quick-item {
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:14px 5px;text-align:center;cursor:pointer;
+}
+.quick-item .emoji {font-size:23px;margin-bottom:8px}
+.quick-item p {font-size:10px;color:var(--text)}
+.community-card {
+  background:var(--card);border:1px solid var(--border);
+  border-radius:13px;padding:14px;margin-bottom:10px;
+}
+.community-card h3 {font-size:14px;margin-bottom:8px}
+.community-card p {color:var(--muted);font-size:12px;line-height:1.5}
+.community-meta {
+  display:flex;justify-content:space-between;
+  color:var(--gold);font-size:11px;margin-top:12px;
+}
+.calendar-card {background:var(--card);border:1px solid var(--border);border-radius:13px;padding:15px}
+.calendar-row {
+  display:flex;justify-content:space-between;padding:12px 0;
+  border-bottom:1px solid var(--border);font-size:12px;
+}
+.calendar-row:last-child {border-bottom:none}
+.calendar-row span:last-child {color:var(--gold)}
+.empty-message {display:none;color:var(--muted);text-align:center;padding:25px 10px;font-size:13px}
 
-  <style>
-    :root {
-      --bg: #090909;
-      --card: #151515;
-      --card2: #202020;
-      --text: #ffffff;
-      --muted: #a5a5a5;
-      --gold: #e6b84a;
-      --border: #303030;
-      --green: #28c76f;
-      --red: #ff5555;
-    }
+/* PAGE SYSTEM */
+.page {display:none;min-height:calc(100vh - 75px)}
+.page.active {display:block}
+.page-header {
+  display:flex;align-items:center;gap:12px;
+  padding:16px 15px;background:var(--card);
+  border-bottom:1px solid var(--border);
+}
+.back-btn {
+  width:36px;height:36px;border-radius:50%;
+  border:1px solid var(--border);background:var(--card2);
+  color:var(--text);font-size:20px;cursor:pointer;
+}
+.page-header h2 {font-size:18px}
 
-    body.light {
-      --bg: #f5f5f5;
-      --card: #ffffff;
-      --card2: #eeeeee;
-      --text: #171717;
-      --muted: #777777;
-      --gold: #bd8b19;
-      --border: #dddddd;
-    }
+/* BOTTOM NAVIGATION */
+.bottom-nav {
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:600px;display:flex;
+  justify-content:space-around;background:var(--card);
+  border-top:1px solid var(--border);
+  padding:9px 3px calc(9px + env(safe-area-inset-bottom));
+  z-index:20;
+}
+.nav-item {
+  flex:1;text-align:center;color:var(--muted);
+  font-size:10px;text-decoration:none;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:5px;position:relative;
+  min-width:0;
+}
+.nav-item svg {
+  width:22px;height:22px;stroke:currentColor;
+  fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
+}
+.nav-item.active {color:var(--gold)}
+.nav-item.active:before {
+  content:"";position:absolute;top:-9px;
+  width:25px;height:3px;background:var(--gold);
+  border-radius:0 0 4px 4px;
+}
+.nav-item .yt-icon {color:#ff3030}
+.nav-item.active .yt-icon {color:#ff3030}
+.nav-item span {white-space:nowrap;font-size:10px}
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+/* YOUTUBE PAGE */
+.youtube-page {padding-bottom:12px}
+.yt-topbar {
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 15px;
+}
+.yt-brand {display:flex;align-items:center;gap:9px;font-weight:bold;font-size:16px}
+.yt-brand svg {width:27px;height:27px;color:#ff3030}
+.yt-top-actions {display:flex;gap:17px;align-items:center}
+.yt-top-actions button {
+  border:0;background:transparent;color:var(--text);
+  font-size:20px;cursor:pointer;
+}
+.yt-banner {padding:0 12px}
+.yt-banner img {
+  display:block;width:100%;height:auto;
+  aspect-ratio:16/5;object-fit:cover;border-radius:12px;
+}
+.yt-channel {
+  display:flex;align-items:center;gap:12px;padding:15px;
+}
+.yt-avatar {
+  width:68px;height:68px;border-radius:50%;
+  object-fit:cover;background:var(--card2);
+  border:1px solid var(--border);
+}
+.yt-channel-info {flex:1;min-width:0}
+.yt-channel-info h2 {font-size:18px;margin-bottom:5px}
+.yt-channel-info p {font-size:11px;color:var(--muted);margin-top:4px}
+.yt-subscribe {
+  margin:0 15px 15px;width:calc(100% - 30px);
+  padding:12px;border:0;border-radius:25px;
+  background:#ff3030;color:white;font-weight:bold;
+  font-size:13px;cursor:pointer;
+}
+.yt-tabs {
+  display:flex;gap:24px;padding:0 15px;
+  border-bottom:1px solid var(--border);overflow-x:auto;
+}
+.yt-tab {
+  border:0;background:transparent;color:var(--muted);
+  padding:13px 0;font-size:13px;white-space:nowrap;cursor:pointer;
+}
+.yt-tab.active {color:var(--gold);border-bottom:2px solid var(--gold);font-weight:bold}
+.yt-content {padding:15px}
+.yt-heading {font-size:17px;margin-bottom:13px}
+.yt-video-card {margin-bottom:21px;cursor:pointer}
+.yt-thumb-wrap {position:relative}
+.yt-thumb {
+  width:100%;aspect-ratio:16/9;object-fit:cover;
+  display:block;border-radius:12px;background:var(--card2);
+}
+.yt-duration {
+  position:absolute;bottom:8px;right:8px;
+  background:#000;color:#fff;font-size:10px;
+  padding:4px 6px;border-radius:4px;
+}
+.yt-video-info {display:flex;gap:10px;padding-top:10px}
+.yt-small-avatar {
+  width:34px;height:34px;border-radius:50%;
+  object-fit:cover;background:var(--card2);
+}
+.yt-video-text {flex:1}
+.yt-video-text h3 {font-size:14px;line-height:1.4;margin-bottom:6px}
+.yt-video-text p {font-size:11px;color:var(--muted);line-height:1.5}
+.yt-more {
+  border:0;background:transparent;color:var(--muted);
+  font-size:19px;padding:0 5px;align-self:flex-start;
+}
+.yt-category-grid {display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:15px}
+.yt-category {
+  border:1px solid var(--border);background:var(--card);
+  border-radius:12px;padding:17px 10px;text-align:center;
+  cursor:pointer;
+}
+.yt-category svg {width:25px;height:25px;color:var(--gold);margin-bottom:8px}
+.yt-category p {font-size:12px}
+.yt-empty {
+  text-align:center;padding:35px 15px;color:var(--muted);
+  font-size:13px;line-height:1.7;
+}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: Arial, sans-serif;
-      padding-bottom: 85px;
-      transition: background .2s, color .2s;
-    }
+/* PLAYER */
+.player-wrap {padding:15px}
+.player-frame {
+  width:100%;aspect-ratio:16/9;border:0;
+  background:#000;border-radius:12px;
+}
+.player-title {font-size:17px;line-height:1.4;margin:14px 0 8px}
+.player-note {font-size:12px;color:var(--muted);line-height:1.6}
 
-    .app {
-      max-width: 600px;
-      margin: auto;
-      min-height: 100vh;
-    }
+/* MORE PAGE */
+.more-list {padding:15px}
+.more-item {
+  display:flex;align-items:center;gap:13px;
+  padding:16px;background:var(--card);
+  border:1px solid var(--border);border-radius:12px;
+  margin-bottom:10px;font-size:14px;
+}
+.more-item svg {width:22px;height:22px;color:var(--gold)}
 
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 15px;
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand img {
-      width: 43px;
-      height: 43px;
-      object-fit: contain;
-      border-radius: 10px;
-    }
-
-    .brand h1 {
-      font-size: 18px;
-      color: var(--gold);
-    }
-
-    .brand p {
-      font-size: 10px;
-      color: var(--muted);
-      margin-top: 3px;
-    }
-
-    .theme-btn {
-      background: var(--card2);
-      color: var(--gold);
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      width: 39px;
-      height: 39px;
-      font-size: 19px;
-      cursor: pointer;
-    }
-
-    .search-wrap {
-      padding: 14px 15px 5px;
-    }
-
-    .search-box {
-      display: flex;
-      align-items: center;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 0 13px;
-    }
-
-    .search-box span {
-      font-size: 19px;
-      color: var(--gold);
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 13px 10px;
-      border: none;
-      outline: none;
-      background: transparent;
-      color: var(--text);
-      font-size: 14px;
-    }
-
-    /* YouTube Channel Banner */
-    .channel-banner {
-      width: 100%;
-      padding: 12px 15px;
-      overflow: hidden;
-    }
-
-    .channel-banner img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 13px;
-    }
-
-    section {
-      padding: 13px 15px;
-    }
-
-    .section-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 13px;
-    }
-
-    .section-heading h2 {
-      font-size: 19px;
-    }
-
-    .section-heading a {
-      color: var(--gold);
-      font-size: 12px;
-      text-decoration: none;
-    }
-
-    .filters {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 12px;
-      scrollbar-width: none;
-    }
-
-    .filter-btn {
-      white-space: nowrap;
-      padding: 9px 16px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      color: var(--text);
-      background: var(--card);
-      cursor: pointer;
-      font-size: 12px;
-    }
-
-    .filter-btn.active {
-      background: var(--gold);
-      color: #111;
-      border-color: var(--gold);
-      font-weight: bold;
-    }
-
-    .ipo-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .ipo-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-    }
-
-    .ipo-top {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-    }
-
-    .ipo-logo {
-      width: 45px;
-      height: 45px;
-      background: var(--card2);
-      color: var(--gold);
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
-      font-size: 19px;
-      font-weight: bold;
-    }
-
-    .ipo-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .ipo-info h3 {
-      font-size: 15px;
-      margin-bottom: 5px;
-    }
-
-    .ipo-info p {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .ipo-status {
-      color: var(--gold);
-      background: #6d531d33;
-      border: 1px solid #9c792e66;
-      border-radius: 20px;
-      padding: 5px 8px;
-      font-size: 10px;
-      white-space: nowrap;
-    }
-
-    .ipo-details {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-top: 15px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
-    }
-
-    .detail small {
-      color: var(--muted);
-      display: block;
-      font-size: 10px;
-      margin-bottom: 5px;
-    }
-
-    .detail strong {
-      font-size: 12px;
-    }
-
-    .ipo-actions {
-      display: flex;
-      gap: 9px;
-      margin-top: 13px;
-    }
-
-    .action-btn {
-      flex: 1;
-      padding: 10px;
-      border-radius: 9px;
-      border: 1px solid var(--border);
-      background: var(--card2);
-      color: var(--text);
-      font-size: 12px;
-      cursor: pointer;
-    }
-
-    .action-btn.primary {
-      background: var(--gold);
-      color: #111;
-      border-color: var(--gold);
-      font-weight: bold;
-    }
-
-    .quick-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 9px;
-    }
-
-    .quick-item {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 5px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .quick-item .emoji {
-      font-size: 23px;
-      margin-bottom: 8px;
-    }
-
-    .quick-item p {
-      font-size: 10px;
-      color: var(--text);
-    }
-
-    .community-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 14px;
-      margin-bottom: 10px;
-    }
-
-    .community-card h3 {
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
-
-    .community-card p {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .community-meta {
-      display: flex;
-      justify-content: space-between;
-      color: var(--gold);
-      font-size: 11px;
-      margin-top: 12px;
-    }
-
-    .calendar-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 15px;
-    }
-
-    .calendar-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 12px;
-    }
-
-    .calendar-row:last-child {
-      border-bottom: none;
-    }
-
-    .calendar-row span:last-child {
-      color: var(--gold);
-    }
-
-    .empty-message {
-      display: none;
-      color: var(--muted);
-      text-align: center;
-      padding: 25px 10px;
-      font-size: 13px;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 600px;
-      display: flex;
-      justify-content: space-around;
-      background: var(--card);
-      border-top: 1px solid var(--border);
-      padding: 10px 3px calc(10px + env(safe-area-inset-bottom));
-      z-index: 20;
-    }
-
-    .nav-item {
-      flex: 1;
-      text-align: center;
-      color: var(--muted);
-      font-size: 10px;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .nav-item span {
-      display: block;
-      font-size: 19px;
-      margin-bottom: 4px;
-    }
-
-    .nav-item.active {
-      color: var(--gold);
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 85px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--gold);
-      color: #111;
-      padding: 11px 18px;
-      border-radius: 9px;
-      font-size: 12px;
-      display: none;
-      z-index: 30;
-    }
-
-    @media (min-width: 600px) {
-      .quick-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-  </style>
+.toast {
+  position:fixed;bottom:85px;left:50%;transform:translateX(-50%);
+  background:var(--gold);color:#111;padding:11px 18px;
+  border-radius:9px;font-size:12px;display:none;z-index:30;
+}
+@media(max-width:360px) {
+  .nav-item span {font-size:9px}
+  .nav-item svg {width:20px;height:20px}
+  .yt-channel-info h2 {font-size:16px}
+}
+</style>
 </head>
 
 <body>
 <div class="app">
 
+<!-- HOME PAGE -->
+<div class="page active" id="homePage">
   <header>
     <div class="brand">
-      <img src="/file_00000000386881fa9a7f793087377043.png"
-           alt="IPO Discussions Logo">
+      <img src="/file_00000000386881fa9a7f793087377043.png" alt="IPO Discussions Logo">
       <div>
         <h1>IPO DISCUSSIONS</h1>
         <p>Your IPO. Your Decisions.</p>
       </div>
     </div>
-
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()"
-            aria-label="Change theme">☀️</button>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Change theme">☀️</button>
   </header>
 
   <div class="search-wrap">
     <div class="search-box">
       <span>⌕</span>
-      <input type="search" id="searchInput"
-             placeholder="Search IPO, company or discussion...">
+      <input type="search" id="searchInput" placeholder="Search IPO, company or discussion...">
     </div>
   </div>
 
   <div class="channel-banner">
-    <img src="/file_00000000893c81f5b5525d8fcd15f223.png"
-         alt="IPO Discussions YouTube Channel Banner">
+    <img src="/file_00000000893c81f5b5525d8fcd15f223.png" alt="IPO Discussions YouTube Banner">
   </div>
 
   <section id="ipos">
     <div class="section-heading">
-      <h2>IPO Updates</h2>
-      <a href="#ipos">View All →</a>
+      <h2>IPO Updates</h2><a href="#" onclick="showPage('iposPage','ipos');return false;">View All →</a>
     </div>
-
     <div class="filters">
       <button class="filter-btn active" onclick="filterIPO('all',this)">All</button>
       <button class="filter-btn" onclick="filterIPO('mainboard',this)">Mainboard</button>
       <button class="filter-btn" onclick="filterIPO('sme',this)">SME</button>
     </div>
-
     <div class="ipo-list" id="ipoList">
-
       <article class="ipo-card" data-type="mainboard">
         <div class="ipo-top">
           <div class="ipo-logo">IPO</div>
-          <div class="ipo-info">
-            <h3>Upcoming IPO</h3>
-            <p>Mainboard IPO</p>
-          </div>
+          <div class="ipo-info"><h3>Upcoming IPO</h3><p>Mainboard IPO</p></div>
           <span class="ipo-status">Upcoming</span>
         </div>
-
         <div class="ipo-details">
-          <div class="detail">
-            <small>Price Band</small>
-            <strong>To be announced</strong>
-          </div>
-          <div class="detail">
-            <small>Lot Size</small>
-            <strong>--</strong>
-          </div>
-          <div class="detail">
-            <small>GMP</small>
-            <strong>--</strong>
-          </div>
+          <div class="detail"><small>Price Band</small><strong>To be announced</strong></div>
+          <div class="detail"><small>Lot Size</small><strong>--</strong></div>
+          <div class="detail"><small>GMP</small><strong>--</strong></div>
         </div>
-
         <div class="ipo-actions">
           <button class="action-btn" onclick="showToast('IPO details coming soon')">Details</button>
           <button class="action-btn primary" onclick="showToast('Discussion section coming soon')">Discuss</button>
         </div>
       </article>
-
       <article class="ipo-card" data-type="sme">
         <div class="ipo-top">
           <div class="ipo-logo">SME</div>
-          <div class="ipo-info">
-            <h3>Sample SME IPO</h3>
-            <p>SME IPO</p>
-          </div>
+          <div class="ipo-info"><h3>Sample SME IPO</h3><p>SME IPO</p></div>
           <span class="ipo-status">Coming Soon</span>
         </div>
-
         <div class="ipo-details">
-          <div class="detail">
-            <small>Price Band</small>
-            <strong>To be announced</strong>
-          </div>
-          <div class="detail">
-            <small>Lot Size</small>
-            <strong>--</strong>
-          </div>
-          <div class="detail">
-            <small>GMP</small>
-            <strong>--</strong>
-          </div>
+          <div class="detail"><small>Price Band</small><strong>To be announced</strong></div>
+          <div class="detail"><small>Lot Size</small><strong>--</strong></div>
+          <div class="detail"><small>GMP</small><strong>--</strong></div>
         </div>
-
         <div class="ipo-actions">
           <button class="action-btn" onclick="showToast('IPO details coming soon')">Details</button>
           <button class="action-btn primary" onclick="showToast('Discussion section coming soon')">Discuss</button>
         </div>
       </article>
-
     </div>
-
-    <div class="empty-message" id="emptyMessage">
-      No matching IPO found.
-    </div>
+    <div class="empty-message" id="emptyMessage">No matching IPO found.</div>
   </section>
 
   <section>
-    <div class="section-heading">
-      <h2>Quick Actions</h2>
-    </div>
-
+    <div class="section-heading"><h2>Quick Actions</h2></div>
     <div class="quick-grid">
-      <div class="quick-item" onclick="showToast('IPO Allotment coming soon')">
-        <div class="emoji">📋</div>
-        <p>Allotment</p>
-      </div>
-
-      <div class="quick-item" onclick="showToast('IPO GMP coming soon')">
-        <div class="emoji">📈</div>
-        <p>IPO GMP</p>
-      </div>
-
-      <div class="quick-item" onclick="showToast('IPO Calendar coming soon')">
-        <div class="emoji">📅</div>
-        <p>IPO Calendar</p>
-      </div>
-
-      <div class="quick-item" onclick="showToast('Listing updates coming soon')">
-        <div class="emoji">🔔</div>
-        <p>Listing</p>
-      </div>
+      <div class="quick-item" onclick="showToast('IPO Allotment coming soon')"><div class="emoji">📋</div><p>Allotment</p></div>
+      <div class="quick-item" onclick="showToast('IPO GMP coming soon')"><div class="emoji">📈</div><p>IPO GMP</p></div>
+      <div class="quick-item" onclick="showToast('IPO Calendar coming soon')"><div class="emoji">📅</div><p>IPO Calendar</p></div>
+      <div class="quick-item" onclick="showToast('Listing updates coming soon')"><div class="emoji">🔔</div><p>Listing</p></div>
     </div>
   </section>
 
   <section id="discussions">
-    <div class="section-heading">
-      <h2>Community Discussions</h2>
-      <a href="#discussions">View All →</a>
-    </div>
-
+    <div class="section-heading"><h2>Community Discussions</h2><a href="#" onclick="showPage('discussionPage','discussion');return false;">View All →</a></div>
     <div class="community-card">
       <h3>Which upcoming IPO are you watching?</h3>
       <p>Share your views, research and IPO-related questions with the community.</p>
-      <div class="community-meta">
-        <span>💬 Discussions</span>
-        <span>Join Conversation →</span>
-      </div>
+      <div class="community-meta"><span>💬 Discussions</span><span>Join Conversation →</span></div>
     </div>
-
     <div class="community-card">
       <h3>IPO Listing Gain or Long Term?</h3>
       <p>What is your IPO investment strategy? Discuss your thoughts with other investors.</p>
-      <div class="community-meta">
-        <span>💬 Investor Talk</span>
-        <span>Join Conversation →</span>
-      </div>
+      <div class="community-meta"><span>💬 Investor Talk</span><span>Join Conversation →</span></div>
     </div>
   </section>
 
   <section id="calendar">
-    <div class="section-heading">
-      <h2>IPO Calendar</h2>
-      <a href="#calendar">View Calendar →</a>
-    </div>
-
+    <div class="section-heading"><h2>IPO Calendar</h2><a href="#calendar">View Calendar →</a></div>
     <div class="calendar-card">
-      <div class="calendar-row">
-        <span>Upcoming IPO Openings</span>
-        <span>To be updated</span>
-      </div>
-      <div class="calendar-row">
-        <span>IPO Allotment</span>
-        <span>To be updated</span>
-      </div>
-      <div class="calendar-row">
-        <span>IPO Listing</span>
-        <span>To be updated</span>
-      </div>
+      <div class="calendar-row"><span>Upcoming IPO Openings</span><span>To be updated</span></div>
+      <div class="calendar-row"><span>IPO Allotment</span><span>To be updated</span></div>
+      <div class="calendar-row"><span>IPO Listing</span><span>To be updated</span></div>
     </div>
   </section>
+</div>
 
-  <nav class="bottom-nav">
-    <a class="nav-item active" href="#">
-      <span>⌂</span>Home
-    </a>
-    <a class="nav-item" href="#ipos">
-      <span>📊</span>IPOs
-    </a>
-    <a class="nav-item" href="#discussions">
-      <span>💬</span>Discussions
-    </a>
-    <a class="nav-item" href="#calendar">
-      <span>📅</span>Calendar
-    </a>
-    <a class="nav-item" href="#" onclick="showToast('More features coming soon');return false;">
-      <span>☰</span>More
-    </a>
-  </nav>
+<!-- IPO PAGE -->
+<div class="page" id="iposPage">
+  <div class="page-header">
+    <button class="back-btn" onclick="showPage('homePage','home')">‹</button>
+    <h2>All IPOs</h2>
+  </div>
+  <section>
+    <p style="color:var(--muted);font-size:13px;line-height:1.6">IPO listing and details section. Live IPO data will be connected in a later step.</p>
+    <div class="filters" style="margin-top:15px">
+      <button class="filter-btn active" onclick="showToast('All IPOs')">All</button>
+      <button class="filter-btn" onclick="showToast('Mainboard IPOs')">Mainboard</button>
+      <button class="filter-btn" onclick="showToast('SME IPOs')">SME</button>
+    </div>
+  </section>
+</div>
 
-  <div class="toast" id="toast"></div>
+<!-- DISCUSSION PAGE -->
+<div class="page" id="discussionPage">
+  <div class="page-header">
+    <button class="back-btn" onclick="showPage('homePage','home')">‹</button>
+    <h2>IPO Discussions</h2>
+  </div>
+  <section>
+    <div class="community-card">
+      <h3>Welcome to IPO Discussions</h3>
+      <p>Share IPO research, ask questions and discuss listing strategies with other investors.</p>
+    </div>
+    <div class="yt-empty">Community posting and replies will be added in a future update.</div>
+  </section>
+</div>
 
+<!-- YOUTUBE CHANNEL PAGE -->
+<div class="page youtube-page" id="youtubePage">
+  <div class="yt-topbar">
+    <div class="yt-brand">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/>
+      </svg>
+      <span>IPO Discussions</span>
+    </div>
+    <div class="yt-top-actions">
+      <button aria-label="Search videos" onclick="showToast('Video search coming soon')">⌕</button>
+      <button aria-label="More options" onclick="showToast('More options coming soon')">⋮</button>
+    </div>
+  </div>
+
+  <div class="yt-banner">
+    <img src="/file_00000000893c81f5b5525d8fcd15f223.png" alt="IPO Discussions Channel Banner">
+  </div>
+
+  <div class="yt-channel">
+    <img class="yt-avatar" src="/file_00000000386881fa9a7f793087377043.png" alt="IPO Discussions Channel Logo">
+    <div class="yt-channel-info">
+      <h2>IPO DISCUSSIONS</h2>
+      <p>YouTube Channel</p>
+      <p>IPO Updates • GMP • Listing • Allotment</p>
+    </div>
+  </div>
+
+  <button class="yt-subscribe" onclick="openChannel()">Subscribe on YouTube</button>
+
+  <div class="yt-tabs">
+    <button class="yt-tab active" onclick="switchYTTab('videos',this)">Videos</button>
+    <button class="yt-tab" onclick="switchYTTab('shorts',this)">Shorts</button>
+    <button class="yt-tab" onclick="switchYTTab('playlists',this)">Playlists</button>
+  </div>
+
+  <div class="yt-content">
+    <div id="ytVideos" class="yt-tab-content">
+      <h3 class="yt-heading">Latest Videos</h3>
+
+      <div class="yt-video-card" onclick="openVideo('VIDEO_ID_1','Latest IPO Analysis')">
+        <div class="yt-thumb-wrap">
+          <img class="yt-thumb" src="https://placehold.co/640x360/171717/e6b84a?text=IPO+Analysis" alt="IPO video thumbnail">
+          <span class="yt-duration">Video</span>
+        </div>
+        <div class="yt-video-info">
+          <img class="yt-small-avatar" src="/file_00000000386881fa9a7f793087377043.png" alt="">
+          <div class="yt-video-text">
+            <h3>Latest IPO Analysis</h3>
+            <p>IPO Discussions • Latest video</p>
+          </div>
+          <button class="yt-more" onclick="event.stopPropagation();showToast('Video options')">⋮</button>
+        </div>
+      </div>
+
+      <div class="yt-video-card" onclick="openVideo('VIDEO_ID_2','IPO Listing Gain Strategy')">
+        <div class="yt-thumb-wrap">
+          <img class="yt-thumb" src="https://placehold.co/640x360/171717/e6b84a?text=Listing+Gain" alt="IPO listing gain thumbnail">
+          <span class="yt-duration">Video</span>
+        </div>
+        <div class="yt-video-info">
+          <img class="yt-small-avatar" src="/file_00000000386881fa9a7f793087377043.png" alt="">
+          <div class="yt-video-text">
+            <h3>IPO Listing Gain Strategy</h3>
+            <p>IPO Discussions • Video</p>
+          </div>
+          <button class="yt-more" onclick="event.stopPropagation();showToast('Video options')">⋮</button>
+        </div>
+      </div>
+
+      <div class="yt-category-grid">
+        <div class="yt-category" onclick="showToast('IPO Analysis videos')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18M7 14l4-4 3 3 6-7"/></svg>
+          <p>IPO Analysis</p>
+        </div>
+        <div class="yt-category" onclick="showToast('Listing Gain videos')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17l6-6 4 4 8-9"/><path d="M15 6h6v6"/></svg>
+          <p>Listing Gain</p>
+        </div>
+        <div class="yt-category" onclick="showToast('Allotment videos')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+          <p>Allotment</p>
+        </div>
+        <div class="yt-category" onclick="showToast('GMP videos')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <p>GMP Updates</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="ytShorts" class="yt-tab-content" style="display:none">
+      <h3 class="yt-heading">Shorts</h3>
+      <div class="yt-empty">Your YouTube Shorts will appear here after the channel is connected.</div>
+    </div>
+
+    <div id="ytPlaylists" class="yt-tab-content" style="display:none">
+      <h3 class="yt-heading">Playlists</h3>
+      <div class="yt-empty">Your YouTube Playlists will appear here after the channel is connected.</div>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO PLAYER PAGE -->
+<div class="page" id="videoPage">
+  <div class="page-header">
+    <button class="back-btn" onclick="showPage('youtubePage','youtube')">‹</button>
+    <h2>Now Playing</h2>
+  </div>
+  <div class="player-wrap">
+    <iframe id="youtubePlayer" class="player-frame"
+      src=""
+      title="YouTube video player"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+    <h3 class="player-title" id="playerTitle">Video Title</h3>
+    <p class="player-note">Video is playing inside IPO Discussions using the official YouTube embedded player.</p>
+  </div>
+</div>
+
+<!-- MORE PAGE -->
+<div class="page" id="morePage">
+  <div class="page-header">
+    <button class="back-btn" onclick="showPage('homePage','home')">‹</button>
+    <h2>More</h2>
+  </div>
+  <div class="more-list">
+    <div class="more-item" onclick="showToast('IPO Calendar')">📅 <span>IPO Calendar</span></div>
+    <div class="more-item" onclick="showToast('Settings coming soon')">⚙️ <span>Settings</span></div>
+    <div class="more-item" onclick="showToast('About IPO Discussions')">ⓘ <span>About IPO Discussions</span></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a class="nav-item active" href="#" onclick="showPage('homePage','home');return false;">
+    <svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/></svg>
+    <span>Home</span>
+  </a>
+  <a class="nav-item" href="#" onclick="showPage('iposPage','ipos');return false;">
+    <svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h17M8 16v-4M13 16V7M18 16V3"/></svg>
+    <span>IPOs</span>
+  </a>
+  <a class="nav-item" href="#" onclick="showPage('discussionPage','discussion');return false;">
+    <svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-9 8.5 9 9 0 0 1-4-.9L3 21l1.9-4.4A8 8 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5Z"/><path d="M8 11h8M8 15h5"/></svg>
+    <span>IPO Discussion</span>
+  </a>
+  <a class="nav-item" href="#" onclick="showPage('youtubePage','youtube');return false;">
+    <svg class="yt-icon" viewBox="0 0 24 24"><path d="M22 8a3 3 0 0 0-2-2c-1.8-.5-8-.5-8-.5s-6.2 0-8 .5a3 3 0 0 0-2 2 25 25 0 0 0-.5 4 25 25 0 0 0 .5 4 3 3 0 0 0 2 2c1.8.5 8 .5 8 .5s6.2 0 8-.5a3 3 0 0 0 2-2 25 25 0 0 0 .5-4 25 25 0 0 0-.5-4Z"/><path d="m10 9 5 3-5 3z"/></svg>
+    <span>YouTube</span>
+  </a>
+  <a class="nav-item" href="#" onclick="showPage('morePage','more');return false;">
+    <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+    <span>More</span>
+  </a>
+</nav>
+
+<div class="toast" id="toast"></div>
 </div>
 
 <script>
-  function toggleTheme() {
-    document.body.classList.toggle("light");
+/* CHANNEL DETAILS
+   Channel link and real video IDs will be connected after you share
+   your YouTube channel URL. */
+const CHANNEL_URL = "https://www.youtube.com/";
 
-    const isLight = document.body.classList.contains("light");
-    document.getElementById("themeBtn").textContent =
-      isLight ? "🌙" : "☀️";
+function toggleTheme() {
+  document.body.classList.toggle("light");
+  const light = document.body.classList.contains("light");
+  document.getElementById("themeBtn").textContent = light ? "🌙" : "☀️";
+  localStorage.setItem("ipoTheme",light ? "light" : "dark");
+}
 
-    localStorage.setItem("ipoTheme", isLight ? "light" : "dark");
+const savedTheme = localStorage.getItem("ipoTheme");
+if(savedTheme === "light") {
+  document.body.classList.add("light");
+  document.getElementById("themeBtn").textContent = "🌙";
+}
+
+function showPage(pageId,navName) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(pageId).classList.add("active");
+
+  document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
+  const navItems = document.querySelectorAll(".nav-item");
+  const map = {home:0,ipos:1,discussion:2,youtube:3,more:4};
+  if(navName in map) navItems[map[navName]].classList.add("active");
+
+  window.scrollTo(0,0);
+
+  if(pageId !== "videoPage") {
+    const player = document.getElementById("youtubePlayer");
+    if(player) player.src = "";
   }
+}
 
-  const savedTheme = localStorage.getItem("ipoTheme");
-
-  if (savedTheme === "light") {
-    document.body.classList.add("light");
-    document.getElementById("themeBtn").textContent = "🌙";
-  }
-
-  function filterIPO(type, button) {
-    document.querySelectorAll(".filter-btn").forEach(btn => {
-      btn.classList.remove("active");
-    });
-
-    button.classList.add("active");
-
-    document.querySelectorAll(".ipo-card").forEach(card => {
-      card.style.display =
-        type === "all" || card.dataset.type === type ? "block" : "none";
-    });
-
-    updateEmptyMessage();
-  }
-
-  const searchInput = document.getElementById("searchInput");
-
-  searchInput.addEventListener("input", function() {
-    const query = this.value.toLowerCase().trim();
-
-    document.querySelectorAll(".ipo-card").forEach(card => {
-      card.style.display =
-        card.textContent.toLowerCase().includes(query) ? "block" : "none";
-    });
-
-    updateEmptyMessage();
+function filterIPO(type,button) {
+  document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+  button.classList.add("active");
+  document.querySelectorAll(".ipo-card").forEach(card => {
+    card.style.display = type === "all" || card.dataset.type === type ? "block" : "none";
   });
+  updateEmptyMessage();
+}
 
-  function updateEmptyMessage() {
-    const visibleCards = [...document.querySelectorAll(".ipo-card")]
-      .some(card => card.style.display !== "none");
-
-    document.getElementById("emptyMessage").style.display =
-      visibleCards ? "none" : "block";
-  }
-
-  let toastTimer;
-
-  function showToast(message) {
-    const toast = document.getElementById("toast");
-    toast.textContent = message;
-    toast.style.display = "block";
-
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      toast.style.display = "none";
-    }, 2200);
-  }
-
-  document.querySelectorAll(".nav-item").forEach(item => {
-    item.addEventListener("click", function() {
-      document.querySelectorAll(".nav-item").forEach(nav => {
-        nav.classList.remove("active");
-      });
-
-      this.classList.add("active");
-    });
+const searchInput = document.getElementById("searchInput");
+searchInput.addEventListener("input",function() {
+  const query = this.value.toLowerCase().trim();
+  document.querySelectorAll(".ipo-card").forEach(card => {
+    card.style.display = card.textContent.toLowerCase().includes(query) ? "block" : "none";
   });
+  updateEmptyMessage();
+});
 
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function() {
-      navigator.serviceWorker.register("/Service-worker.js")
-        .catch(function(error) {
-          console.log("Service worker registration failed:", error);
-        });
-    });
+function updateEmptyMessage() {
+  const visible = [...document.querySelectorAll(".ipo-card")].some(card => card.style.display !== "none");
+  document.getElementById("emptyMessage").style.display = visible ? "none" : "block";
+}
+
+function switchYTTab(tab,button) {
+  document.querySelectorAll(".yt-tab").forEach(t => t.classList.remove("active"));
+  button.classList.add("active");
+  document.querySelectorAll(".yt-tab-content").forEach(c => c.style.display = "none");
+  const target = {videos:"ytVideos",shorts:"ytShorts",playlists:"ytPlaylists"}[tab];
+  document.getElementById(target).style.display = "block";
+}
+
+function openChannel() {
+  window.open(CHANNEL_URL,"_blank","noopener");
+}
+
+function openVideo(videoId,title) {
+  if(videoId.startsWith("VIDEO_ID")) {
+    showToast("Real YouTube videos will be connected after channel link is added.");
+    return;
   }
+  document.getElementById("playerTitle").textContent = title;
+  document.getElementById("youtubePlayer").src =
+    "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(videoId);
+  showPage("videoPage","youtube");
+}
+
+let toastTimer;
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.style.display = "block";
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.style.display = "none",2300);
+}
+
+if("serviceWorker" in navigator) {
+  window.addEventListener("load",function() {
+    navigator.serviceWorker.register("/Service-worker.js")
+      .catch(error => console.log("Service worker registration failed:",error));
+  });
+}
 </script>
-
 </body>
 </html>
-
-
