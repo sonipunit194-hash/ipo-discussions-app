@@ -638,15 +638,23 @@ function openChannel() {
   window.open(CHANNEL_URL,"_blank","noopener");
 }
 
+
 function openVideo(videoId,title) {
   if(videoId.startsWith("VIDEO_ID")) {
-    showToast("Real YouTube videos will be connected after channel link is added.");
+    showToast("Real YouTube videos are not available.");
     return;
   }
+
   document.getElementById("playerTitle").textContent = title;
+
   document.getElementById("youtubePlayer").src =
-    "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(videoId);
+    "https://www.youtube-nocookie.com/embed/" +
+    encodeURIComponent(videoId) +
+    "?rel=0&modestbranding=1";
+
   showPage("videoPage","youtube");
+}
+  
 }
 
 let toastTimer;
