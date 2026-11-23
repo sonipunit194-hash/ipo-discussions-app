@@ -480,26 +480,30 @@ section {padding:13px 15px}
   font-size: 12px;
 }
 
+
 /* HOME IPO SECTION */
 .home-ipo-section {
-  margin: 18px 0;
+  margin: 14px 0;
   width: 100%;
 }
 
 .home-ipo-tabs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
-  margin: 18px 0;
+  margin: 12px 0 16px;
+  width: 100%;
 }
 
 .home-ipo-tab {
-  min-height: 55px;
+  min-width: 0;
+  height: 43px;
+  padding: 0 5px;
   border: 1px solid var(--border, #444);
-  border-radius: 30px;
+  border-radius: 12px;
   background: var(--card-bg, #171717);
   color: var(--text, #fff);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
 }
@@ -512,29 +516,33 @@ section {padding:13px 15px}
 
 .home-ipo-list {
   display: grid;
-  gap: 18px;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  width: 100%;
 }
 
 .home-ipo-card {
+  width: 100%;
+  box-sizing: border-box;
   background: var(--card-bg, #171717);
-  border: 1px solid #9b7929;
-  border-radius: 20px;
-  padding: 18px;
+  border: 1px solid var(--border, #444);
+  border-radius: 17px;
+  padding: 16px;
   color: var(--text, #fff);
   overflow: hidden;
 }
 
 .home-ipo-main {
   display: grid;
-  grid-template-columns: 92px minmax(0, 1fr);
-  gap: 15px;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 13px;
   align-items: center;
 }
 
 .home-ipo-logo {
-  width: 92px;
-  height: 92px;
-  border-radius: 15px;
+  width: 76px;
+  height: 76px;
+  border-radius: 13px;
   background: #fff;
   color: #171717;
   display: flex;
@@ -552,18 +560,18 @@ section {padding:13px 15px}
 }
 
 .home-ipo-title {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 800;
-  margin: 0 0 9px;
+  margin: 0 0 7px;
 }
 
 .home-ipo-status {
   display: inline-block;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
-  padding: 6px 11px;
+  padding: 5px 10px;
   border-radius: 20px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   background: #176c35;
   color: white;
 }
@@ -579,10 +587,10 @@ section {padding:13px 15px}
 .home-ipo-info {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 13px;
-  border-top: 1px solid #454545;
-  margin-top: 17px;
-  padding-top: 15px;
+  gap: 14px 10px;
+  border-top: 1px solid var(--border, #454545);
+  margin-top: 15px;
+  padding-top: 14px;
 }
 
 .home-ipo-info div {
@@ -592,13 +600,13 @@ section {padding:13px 15px}
 .home-ipo-info small {
   display: block;
   color: var(--muted-text, #aaa);
-  font-size: 12px;
+  font-size: 11px;
   margin-bottom: 5px;
 }
 
 .home-ipo-info strong {
   display: block;
-  font-size: 14px;
+  font-size: 13px;
   overflow-wrap: anywhere;
 }
 
@@ -607,13 +615,40 @@ section {padding:13px 15px}
 }
 
 .home-ipo-empty {
-  padding: 28px 15px;
+  padding: 22px 14px;
   text-align: center;
-  border: 1px dashed #777;
-  border-radius: 16px;
+  border: 1px dashed var(--border, #777);
+  border-radius: 14px;
   color: var(--muted-text, #aaa);
   background: var(--card-bg, #171717);
+  font-size: 13px;
 }
+
+@media (max-width: 380px) {
+  .home-ipo-tab {
+    height: 40px;
+    font-size: 12px;
+  }
+
+  .home-ipo-card {
+    padding: 13px;
+  }
+
+  .home-ipo-main {
+    grid-template-columns: 65px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .home-ipo-logo {
+    width: 65px;
+    height: 65px;
+  }
+
+  .home-ipo-title {
+    font-size: 14px;
+  }
+}
+
 
 @media (max-width: 380px) {
   .home-ipo-card {
@@ -675,20 +710,28 @@ section {padding:13px 15px}
   </div>
 
   
-<section id="ipos" class="home-ipo-section">
+
+<!-- HOME IPO SECTION -->
+<section class="home-ipo-section" id="homeIpoSection">
+
   <div class="home-ipo-tabs">
-    <button class="home-ipo-tab" data-status="open" onclick="setHomeIPOStatus('open')">OPEN</button>
-    <button class="home-ipo-tab active" data-status="upcoming" onclick="setHomeIPOStatus('upcoming')">UPCOMING</button>
-    <button class="home-ipo-tab" data-status="listed" onclick="setHomeIPOStatus('listed')">LISTED</button>
+    <button class="home-ipo-tab" data-status="open">OPEN</button>
+    <button class="home-ipo-tab active" data-status="upcoming">UPCOMING</button>
+    <button class="home-ipo-tab" data-status="listed">LISTED</button>
   </div>
 
-  <div id="homeIPOList" class="home-ipo-list">
-    <div class="home-ipo-empty">
-      IPO data API connect hone ke baad yahan dikhega.
-    </div>
+  <div class="home-ipo-list" id="homeIpoList"></div>
+
+  <div class="home-ipo-empty" id="homeIpoEmpty" hidden>
+    इस Category में अभी कोई IPO उपलब्ध नहीं है।
   </div>
 
-</div>
+  <p class="home-ipo-demo-note">
+    Demo Information — यह वास्तविक IPO डेटा नहीं है।
+  </p>
+
+</section>
+
 
 <!-- IPO PAGE -->
 <div class="page" id="iposPage">
@@ -1825,87 +1868,138 @@ async function loadYouTubeVideos() {
 
 loadYouTubeVideos();
 
-/* HOME IPO TABS AND DYNAMIC CARDS */
 
-let homeIPOData = [];
+/* HOME IPO DEMO SYSTEM */
 
-function setHomeIPOStatus(status) {
-  document.querySelectorAll(".home-ipo-tab").forEach(button => {
-    button.classList.toggle(
-      "active",
-      button.dataset.status === status
-    );
-  });
+const homeIpoDemoData = [
+  {
+    name: "NOVA TECHNOLOGIES",
+    status: "open",
+    type: "Mainboard",
+    price: "₹120–125",
+    lot: "120 Shares",
+    issue: "₹450 Cr",
+    open: "20 Nov 2026",
+    close: "25 Nov 2026",
+    allotment: "27 Nov 2026",
+    listing: "1 Dec 2026",
+    gmp: "Demo Only"
+  },
+  {
+    name: "GREENMILE INDUSTRIES",
+    status: "open",
+    type: "SME",
+    price: "₹85–90",
+    lot: "160 Shares",
+    issue: "₹125 Cr",
+    open: "21 Nov 2026",
+    close: "26 Nov 2026",
+    allotment: "28 Nov 2026",
+    listing: "2 Dec 2026",
+    gmp: "Demo Only"
+  },
+  {
+    name: "SUNRISE FOODS",
+    status: "upcoming",
+    type: "Mainboard",
+    price: "₹180–190",
+    lot: "75 Shares",
+    issue: "₹360 Cr",
+    open: "28 Nov 2026",
+    close: "2 Dec 2026",
+    allotment: "3 Dec 2026",
+    listing: "8 Dec 2026",
+    gmp: "Demo Only"
+  },
+  {
+    name: "NEXTGEN SME",
+    status: "upcoming",
+    type: "SME",
+    price: "₹95–100",
+    lot: "120 Shares",
+    issue: "₹80 Cr",
+    open: "3 Dec 2026",
+    close: "7 Dec 2026",
+    allotment: "8 Dec 2026",
+    listing: "11 Dec 2026",
+    gmp: "Demo Only"
+  },
+  {
+    name: "URBAN RETAIL LTD",
+    status: "listed",
+    type: "Mainboard",
+    price: "₹140–150",
+    lot: "100 Shares",
+    issue: "₹500 Cr",
+    open: "--",
+    close: "--",
+    allotment: "--",
+    listing: "18 Nov 2026",
+    gmp: "Demo Only"
+  },
+  {
+    name: "SMARTPACK SME",
+    status: "listed",
+    type: "SME",
+    price: "₹70–75",
+    lot: "160 Shares",
+    issue: "₹60 Cr",
+    open: "--",
+    close: "--",
+    allotment: "--",
+    listing: "15 Nov 2026",
+    gmp: "Demo Only"
+  }
+];
 
-  renderHomeIPOList(status);
-}
+let selectedHomeIpoStatus = "upcoming";
 
-function renderHomeIPOList(status = "upcoming") {
-  const container = document.getElementById("homeIPOList");
-  if (!container) return;
+function renderHomeIpoCards() {
+  const list = document.getElementById("homeIpoList");
+  const empty = document.getElementById("homeIpoEmpty");
 
-  const filtered = homeIPOData.filter(ipo =>
-    String(ipo.status || "").toLowerCase() === status
+  if (!list || !empty) return;
+
+  const filtered = homeIpoDemoData.filter(
+    ipo => ipo.status === selectedHomeIpoStatus
   );
 
-  if (!filtered.length) {
-    container.innerHTML =
-      '<div class="home-ipo-empty">Is category mein abhi IPO data available nahi hai.</div>';
-    return;
-  }
+  list.innerHTML = "";
 
-  container.innerHTML = filtered.map(ipo => `
+  empty.hidden = filtered.length > 0;
+
+  list.innerHTML = filtered.map(ipo => `
     <article class="home-ipo-card">
       <div class="home-ipo-main">
         <div class="home-ipo-logo">
-          ${ipo.logo
-            ? `<img src="${escapeHomeIPO(ipo.logo)}" alt="">`
-            : escapeHomeIPO(ipo.symbol || "IPO")}
+          <span>${escapeHomeIpo(ipo.name.substring(0, 2))}</span>
         </div>
-
-        <div>
-          <span class="home-ipo-status ${status}">
-            ${status.toUpperCase()}
-          </span>
-          <h3 class="home-ipo-title">
-            ${escapeHomeIPO(ipo.company || "IPO")}
-          </h3>
-          <div>Price: ${escapeHomeIPO(ipo.priceBand || "Not announced")}</div>
-          <div>Lot Size: ${escapeHomeIPO(ipo.lotSize ?? "--")}</div>
+        <div class="home-ipo-title">
+          <h3>${escapeHomeIpo(ipo.name)}</h3>
+          <span>${escapeHomeIpo(ipo.type)}</span>
         </div>
+        <span class="home-ipo-status ${ipo.status}">
+          ${ipo.status.toUpperCase()}
+        </span>
       </div>
 
       <div class="home-ipo-info">
-        <div>
-          <small>Issue Size</small>
-          <strong>${escapeHomeIPO(ipo.issueSize || "--")}</strong>
-        </div>
-        <div>
-          <small>Subscription</small>
-          <strong>${escapeHomeIPO(ipo.subscription || "--")}</strong>
-        </div>
-        <div>
-          <small>GMP (Unofficial)</small>
-          <strong class="home-ipo-gmp">${escapeHomeIPO(ipo.gmp || "--")}</strong>
-        </div>
-        <div>
-          <small>Open / Close</small>
-          <strong>${escapeHomeIPO(ipo.openDate || "--")} / ${escapeHomeIPO(ipo.closeDate || "--")}</strong>
-        </div>
-        <div>
-          <small>Allotment Date</small>
-          <strong>${escapeHomeIPO(ipo.allotmentDate || "--")}</strong>
-        </div>
-        <div>
-          <small>Listing Date</small>
-          <strong>${escapeHomeIPO(ipo.listingDate || "--")}</strong>
-        </div>
+        <div><small>Price Band</small><strong>${escapeHomeIpo(ipo.price)}</strong></div>
+        <div><small>Lot Size</small><strong>${escapeHomeIpo(ipo.lot)}</strong></div>
+        <div><small>Issue Size</small><strong>${escapeHomeIpo(ipo.issue)}</strong></div>
+        <div><small>Open / Close</small><strong>${escapeHomeIpo(ipo.open)} / ${escapeHomeIpo(ipo.close)}</strong></div>
+        <div><small>Allotment Date</small><strong>${escapeHomeIpo(ipo.allotment)}</strong></div>
+        <div><small>Listing Date</small><strong>${escapeHomeIpo(ipo.listing)}</strong></div>
+      </div>
+
+      <div class="home-ipo-gmp">
+        GMP: ${escapeHomeIpo(ipo.gmp)}
       </div>
     </article>
   `).join("");
 }
 
-function escapeHomeIPO(value) {
+function escapeHomeIpo(value) {
   return String(value ?? "").replace(/[&<>"']/g, char => ({
     "&": "&amp;",
     "<": "&lt;",
@@ -1915,19 +2009,27 @@ function escapeHomeIPO(value) {
   })[char]);
 }
 
-/* API data will be supplied here later */
+document.querySelectorAll(".home-ipo-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    selectedHomeIpoStatus = tab.dataset.status;
+
+    document.querySelectorAll(".home-ipo-tab").forEach(item => {
+      item.classList.toggle("active", item === tab);
+    });
+
+    renderHomeIpoCards();
+  });
+});
+
 window.setHomeIPOData = function(data) {
-  homeIPOData = Array.isArray(data) ? data : [];
-
-  const activeTab =
-    document.querySelector(".home-ipo-tab.active");
-
-  renderHomeIPOList(
-    activeTab ? activeTab.dataset.status : "upcoming"
-  );
+  if (Array.isArray(data)) {
+    homeIpoDemoData.splice(0, homeIpoDemoData.length, ...data);
+    renderHomeIpoCards();
+  }
 };
 
-renderHomeIPOList("upcoming");
+renderHomeIpoCards();
+
 
 </script>
 </body>
