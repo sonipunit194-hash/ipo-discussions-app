@@ -473,34 +473,8 @@ section {padding:13px 15px}
     <div id="ytVideos" class="yt-tab-content">
       <h3 class="yt-heading">Latest Videos</h3>
 
-      <div class="yt-video-card" onclick="openVideo('VIDEO_ID_1','Latest IPO Analysis')">
-        <div class="yt-thumb-wrap">
-          <img class="yt-thumb" src="https://placehold.co/640x360/171717/e6b84a?text=IPO+Analysis" alt="IPO video thumbnail">
-          <span class="yt-duration">Video</span>
-        </div>
-        <div class="yt-video-info">
-          <img class="yt-small-avatar" src="/file_00000000386881fa9a7f793087377043.png" alt="">
-          <div class="yt-video-text">
-            <h3>Latest IPO Analysis</h3>
-            <p>IPO Discussions • Latest video</p>
-          </div>
-          <button class="yt-more" onclick="event.stopPropagation();showToast('Video options')">⋮</button>
-        </div>
-      </div>
-
-      <div class="yt-video-card" onclick="openVideo('VIDEO_ID_2','IPO Listing Gain Strategy')">
-        <div class="yt-thumb-wrap">
-          <img class="yt-thumb" src="https://placehold.co/640x360/171717/e6b84a?text=Listing+Gain" alt="IPO listing gain thumbnail">
-          <span class="yt-duration">Video</span>
-        </div>
-        <div class="yt-video-info">
-          <img class="yt-small-avatar" src="/file_00000000386881fa9a7f793087377043.png" alt="">
-          <div class="yt-video-text">
-            <h3>IPO Listing Gain Strategy</h3>
-            <p>IPO Discussions • Video</p>
-          </div>
-          <button class="yt-more" onclick="event.stopPropagation();showToast('Video options')">⋮</button>
-        </div>
+      <div id="ytVideoList">
+  <div class="yt-empty">Loading latest videos...</div>
       </div>
 
       <div class="yt-category-grid">
@@ -1387,6 +1361,89 @@ if("serviceWorker" in navigator) {
 })();
 </script>
 <!-- END IPO DISCUSSION LIVE CHAT ADD-ON -->
+<script>
 
+async function loadYouTubeVideos() {
+  const videoList = document.getElementById("ytVideoList");
+
+  if (!videoList) return;
+
+  videoList.textContent = "Loading latest videos...";
+
+  try {
+    const response = await fetch("/api/youtube");
+    const data = await response.json();
+
+    if (!response.ok || !data.videos || !data.videos.length) {
+      throw new Error("Videos could not be loaded");
+    }
+
+    const channelName = data.channel?.title || "IPO Discussions";
+    const channelImage =
+      data.channel?.thumbnail ||
+      "/file_00000000386881fa9a7f793087377043.png";
+
+    const avatar = document.querySelector(".yt-avatar");
+    if (avatar) avatar.src = channelImage;
+
+    videoList.replaceChildren();
+
+    data.videos.forEach(video => {
+      const card = document.createElement("div");
+      card.className = "yt-video-card";
+
+      const thumbWrap = document.createElement("div");
+      thumbWrap.className = "yt-thumb-wrap";
+
+      const thumb = document.createElement("img");
+      thumb.className = "yt-thumb";
+      thumb.src = video.thumbnail;
+      thumb.alt = video.title || "YouTube video";
+      thumb.loading = "lazy";
+
+      const label = document.createElement("span");
+      label.className = "yt-duration";
+      label.textContent = "Video";
+
+      thumbWrap.append(thumb, label);
+
+      const info = document.createElement("div");
+      info.className = "yt-video-info";
+
+      const smallAvatar = document.createElement("img");
+      smallAvatar.className = "yt-small-avatar";
+      smallAvatar.src = channelImage;
+      smallAvatar.alt = "";
+
+      const textBox = document.createElement("div");
+      textBox.className = "yt-video-text";
+
+      const title = document.createElement("h3");
+      title.textContent = video.title || "Untitled video";
+
+      const channel = document.createElement("p");
+      channel.textContent = channelName;
+
+      textBox.append(title, channel);
+      info.append(smallAvatar, textBox);
+      card.append(thumbWrap, info);
+
+      card.addEventListener("click", () => {
+        openVideo(video.videoId, video.title);
+      });
+
+      videoList.appendChild(card);
+    });
+
+  } catch (error) {
+    console.error("YouTube loading error:", error);
+    videoList.textContent =
+      "Latest videos load nahi ho paaye. Please try again.";
+  }
+}
+
+loadYouTubeVideos();
+
+</script>
 </body>
 </html>
