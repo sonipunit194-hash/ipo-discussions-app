@@ -11,50 +11,25 @@ export default async function handler(req, res) {
 
     if (!apiKey) {
       return res.status(500).json({
-        error: "EJI API key is missing"
+        error: "EJI_API_KEY is missing in Vercel"
       });
     }
 
-    const allowedParams = [
-      "status",
-      "segment",
-      "year",
-      "start",
-      "end",
-      "q",
-      "limit",
-      "offset"
-    ];
-
-    const incomingUrl = new URL(
-      req.url,
-      "https://ipo-discussions-app.vercel.app"
-    );
-
-    const apiUrl = new URL(
-      "https://fin.ejiapi.com/api/ipo"
-    );
-
-    allowedParams.forEach(param => {
-      const value = incomingUrl.searchParams.get(param);
-
-      if (value) {
-        apiUrl.searchParams.set(param, value);
+    const response = await fetch(
+      "https://fin.ejiapi.com/api/ipo",
+      {
+        method: "GET",
+        headers: {
+          "x-api-key": apiKey
+        }
       }
-    });
-
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        "x-api-key": apiKey
-      }
-    });
+    );
 
     const data = await response.json();
 
     if (!response.ok) {
-      return res.status(response.status).json({
-        error: "IPO data could not be loaded",
+      return res.status(502).json({
+        error: "EJI IPO API request failed",
         details: data
       });
     }
@@ -63,7 +38,8 @@ export default async function handler(req, res) {
 
   } catch (error) {
     return res.status(500).json({
-      error: "Something went wrong while fetching IPO data"
+      error: "IPO API server error",
+      details: error.message
     });
   }
 }
