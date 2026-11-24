@@ -970,13 +970,20 @@ section {padding:13px 15px}
     <button class="back-btn" onclick="showPage('homePage','home')">‹</button>
     <h2>All IPOs</h2>
   </div>
-  <section>
-    <p style="color:var(--muted);font-size:13px;line-height:1.6">IPO listing and details section. Live IPO data will be connected in a later step.</p>
-    <div class="filters" style="margin-top:15px">
-      <button class="filter-btn active" onclick="showToast('All IPOs')">All</button>
-      <button class="filter-btn" onclick="showToast('Mainboard IPOs')">Mainboard</button>
-      <button class="filter-btn" onclick="showToast('SME IPOs')">SME</button>
-    </div>
+  <section class="all-ipo-section">
+
+  <div class="filters" style="margin-top:15px">
+    <button class="filter-btn active" data-ipo-filter="all">All</button>
+    <button class="filter-btn" data-ipo-filter="mainboard">Mainboard</button>
+    <button class="filter-btn" data-ipo-filter="sme">SME</button>
+  </div>
+
+  <div id="allIpoList" style="margin-top:18px">
+    <p style="color:var(--muted);text-align:center">
+      Loading IPOs...
+    </p>
+  </div>
+
   </section>
 </div>
 
@@ -2369,6 +2376,99 @@ async function loadAutomaticIPOs() {
 }
 
 loadAutomaticIPOs();
+ // ALL IPO PAGE - AUTOMATIC API
+let allIpoData = [];
+let selectedAllIpoFilter = "all";
+
+async function loadAllIPOs() {
+  const list = document.getElementById("allIpoList");
+
+  try {
+    const response = await fetch("/api/ipo");
+    const result = await response.json();
+
+    if (!response.ok || !Array.isArray(result.data)) {
+      throw new Error("IPO data not available");
+    }
+
+    allIpoData = result.data;
+    renderAllIPOs();
+
+  } catch (error) {
+    list.innerHTML = `
+      <p style="text-align:center;color:var(--muted)">
+        IPO data load nahi ho paya. Please try again.
+      </p>
+    `;
+    console.error("All IPO Error:", error);
+  }
+}
+
+function renderAllIPOs() {
+  const list = document.getElementById("allIpoList");
+
+  const filtered = allIpoData.filter(ipo => {
+    if (selectedAllIpoFilter === "all") return true;
+    return (ipo.segment || "").toLowerCase() === selectedAllIpoFilter;
+  });
+
+  if (filtered.length === 0) {
+    list.innerHTML = `
+      <p style="text-align:center;color:var(--muted)">
+        No IPOs available.
+      </p>
+    `;
+    return;
+  }
+
+  list.innerHTML = filtered.map(ipo => {
+    const price = ipo.priceBandLow != null
+      ? "₹" + ipo.priceBandLow + " - ₹" + ipo.priceBandHigh
+      : ipo.issuePrice != null ? "₹" + ipo.issuePrice : "N/A";
+
+    return `
+      <article class="home-ipo-card">
+        <div class="home-ipo-main">
+          <div class="home-ipo-logo">
+            <span>${escapeHomeIpo((ipo.company || "IPO").substring(0, 2))}</span>
+          </div>
+
+          <div class="home-ipo-title">
+            <h3>${escapeHomeIpo(ipo.company || ipo.symbol)}</h3>
+            <span>${escapeHomeIpo(ipo.segment || "IPO")}</span>
+          </div>
+
+          <span class="home-ipo-status ${escapeHomeIpo(ipo.status || "")}">
+            ${escapeHomeIpo((ipo.status || "N/A").toUpperCase())}
+          </span>
+        </div>
+
+        <div class="home-ipo-info">
+          <div><small>Price Band</small><strong>${escapeHomeIpo(price)}</strong></div>
+          <div><small>Lot Size</small><strong>${escapeHomeIpo(ipo.lotSize ?? "N/A")}</strong></div>
+          <div><small>Issue Size</small><strong>${escapeHomeIpo(ipo.issueSizeCr != null ? "₹" + ipo.issueSizeCr + " Cr" : "N/A")}</strong></div>
+          <div><small>Open Date</small><strong>${escapeHomeIpo(ipo.openDate || "N/A")}</strong></div>
+          <div><small>Close Date</small><strong>${escapeHomeIpo(ipo.closeDate || "N/A")}</strong></div>
+          <div><small>Listing Date</small><strong>${escapeHomeIpo(ipo.listingDate || "N/A")}</strong></div>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+document.querySelectorAll("[data-ipo-filter]").forEach(button => {
+  button.addEventListener("click", () => {
+    selectedAllIpoFilter = button.dataset.ipoFilter;
+
+    document.querySelectorAll("[data-ipo-filter]").forEach(item => {
+      item.classList.toggle("active", item === button);
+    });
+
+    renderAllIPOs();
+  });
+});
+
+loadAllIPOs(); 
   
 </script>
 </body>
