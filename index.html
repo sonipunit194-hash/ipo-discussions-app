@@ -2320,7 +2320,56 @@ window.setHomeIPOData = function(data) {
 
 renderHomeIpoCards();
 
+// AUTOMATIC IPO API SYSTEM
+async function loadAutomaticIPOs() {
+  try {
+    const response = await fetch("/api/ipo");
+    const result = await response.json();
 
+    if (!response.ok || !Array.isArray(result.data)) {
+      throw new Error("IPO data load failed");
+    }
+
+    const formatDate = (date) => {
+      if (!date) return "N/A";
+
+      const d = new Date(date);
+      if (isNaN(d.getTime())) return date;
+
+      return d.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      });
+    };
+
+    const ipoList = result.data.map(ipo => ({
+      name: ipo.company || ipo.symbol || "IPO",
+      status: ipo.status || "upcoming",
+      type: ipo.segment || "Mainboard",
+      price: ipo.priceBandLow != null
+        ? "₹" + ipo.priceBandLow + " - ₹" + ipo.priceBandHigh
+        : ipo.issuePrice != null ? "₹" + ipo.issuePrice : "N/A",
+      lot: ipo.lotSize ? ipo.lotSize + " Shares" : "N/A",
+      issue: ipo.issueSizeCr != null
+        ? "₹" + ipo.issueSizeCr + " Cr"
+        : "N/A",
+      open: formatDate(ipo.openDate),
+      close: formatDate(ipo.closeDate),
+      allotment: formatDate(ipo.allotmentDate),
+      listing: formatDate(ipo.listingDate),
+      gmp: "Not Available"
+    }));
+
+    window.setHomeIPOData(ipoList);
+
+  } catch (error) {
+    console.error("Automatic IPO Error:", error);
+  }
+}
+
+loadAutomaticIPOs();
+  
 </script>
 </body>
 </html>
