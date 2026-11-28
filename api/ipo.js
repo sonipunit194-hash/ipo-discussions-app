@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     }
 
     const response = await fetch(
-      "https://fin.ejiapi.com/api/ipo",
+      "https://fin.ejiapi.com/api/ipo?limit=500",
       {
         method: "GET",
         headers: {
